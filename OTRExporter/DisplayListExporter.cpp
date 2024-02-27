@@ -414,10 +414,12 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 
 				u32 dListVal = (data & 0x0FFFFFFF) + 1;
 
+				// Using custom macro to signal to the render to perform segment offset adjustments
+				// This preserves portability of segment addresses on 32bit and 64bit machines
 				if (pp != 0)
-					value = {gsSPBranchList(dListVal)};
+					value = {gsSPBranchListSegment(dListVal)};
 				else
-					value = {gsSPDisplayList(dListVal)};
+					value = {gsSPDisplayListSegment(dListVal)};
 
 				word0 = value.words.w0;
 				word1 = value.words.w1;

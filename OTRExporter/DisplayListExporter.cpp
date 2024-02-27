@@ -412,7 +412,10 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 
 				Gfx value;
 
-				u32 dListVal = (data & 0x0FFFFFFF) + 1;
+				// The size of Gfx is double compared to hardware on 64bit machines,
+				// so the offset needs to be doubled for lookups to go to the right opcode in the render
+				u32 dListVal = ((GETSEGNUM(data) << 24) |
+								(GETSEGOFFSET(data) * (sizeof(Gfx) / (2 * sizeof(uint32_t))))) + 1;
 
 				if (pp != 0)
 					value = {gsSPBranchList(dListVal)};
